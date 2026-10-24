@@ -1,7 +1,7 @@
 "use client";
 
 import { InputHTMLAttributes } from "react";
-import { CheckSquare, Square, SquareCheck } from "lucide-react";
+import { Square, SquareCheck } from "lucide-react";
 import classNames from "classnames";
 
 export interface ICheckboxProps extends InputHTMLAttributes<HTMLInputElement> {

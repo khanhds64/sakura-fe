@@ -58,7 +58,7 @@ const DateInput = (props: IDateInputProps) => {
       <PopoverContent
         align="start"
         sideOffset={8}
-        className="z-50 w-[304px] rounded-2xl border border-gray-200 bg-white p-0 shadow-lg shadow-blue-100/50"
+        className="z-50 w-76 rounded-2xl border border-gray-200 bg-white p-0 shadow-lg shadow-blue-100/50"
       >
         <div className="relative p-4 text-gray-800">
           <DayPicker
