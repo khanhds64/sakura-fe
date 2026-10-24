@@ -10,7 +10,7 @@ import {
 } from "../api";
 import { Checkbox } from "../components/core/Checkbox";
 import { Body } from "../components/core/Body";
-import { Minus } from "lucide-react";
+import { ChartColumn, Minus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -105,7 +105,7 @@ const DashboardPageView = () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-2 lg:px-4">
-      <div className="flex gap-3 items-start">
+      <div className="flex gap-3 items-start min-h-18">
         <Heading variant="h1" className="w-full max-w-100 min-w-0">
           {watcher.isCompared
             ? "This Week's Revenue Trend vs Last Week"
@@ -113,7 +113,7 @@ const DashboardPageView = () => {
         </Heading>
 
         <div className="flex items-center justify-center gap-3 flex-wrap">
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Checkbox
               className="border-zinc-800 text-white"
               {...register("posRevenue")}
@@ -140,21 +140,26 @@ const DashboardPageView = () => {
           </div>
 
           <Button
-            variant="primary"
+            variant={watcher.isCompared ? "active" : "primary"}
             onClick={() => setValue("isCompared", !watcher.isCompared)}
           >
+            <ChartColumn size={18} />
             <Heading>Compare to Last Week</Heading>
           </Button>
         </div>
       </div>
-      <div className="flex gap-3 text-zinc-800">
+      <div className="grid grid-cols-1 gap-3 text-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
         <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
           <Body>Total Revenue</Body>
-          {(!watcher.posRevenue || !watcher.eatclubRevenue) && <div>--</div>}
+          {(!watcher.posRevenue || !watcher.eatclubRevenue) && (
+            <Heading>--</Heading>
+          )}
 
           {watcher.posRevenue && watcher.eatclubRevenue && (
-            <div className="flex gap-3">
-              <Heading>${formatNumberComma(thisWeekRevenue)}</Heading>
+            <div className="flex gap-3 items-center">
+              <Heading variant="h1">
+                ${formatNumberComma(thisWeekRevenue)}
+              </Heading>
 
               <div className="flex gap-1">
                 <Body className="text-zinc-500">
@@ -169,7 +174,7 @@ const DashboardPageView = () => {
                 >
                   {revenueChange === null
                     ? "--"
-                    : `(${formatNumberComma(revenueChange)}%)`}
+                    : `(${revenueChange > 0 ? "+" : ""}${formatNumberComma(revenueChange)}%)`}
                 </Body>
               </div>
             </div>
@@ -182,8 +187,10 @@ const DashboardPageView = () => {
           {(!watcher.posRevenue || !watcher.eatclubRevenue) && <div>--</div>}
 
           {watcher.posRevenue && watcher.eatclubRevenue && (
-            <div className="flex gap-3">
-              <Heading>${formatNumberComma(thisWeekAverageRevenue)}</Heading>
+            <div className="flex gap-3 items-center">
+              <Heading variant="h1">
+                ${formatNumberComma(thisWeekAverageRevenue)}
+              </Heading>
 
               <div className="flex gap-1">
                 <Body className="text-zinc-500">
@@ -198,7 +205,7 @@ const DashboardPageView = () => {
                 >
                   {averageRevenueChange === null
                     ? "--"
-                    : `(${formatNumberComma(averageRevenueChange)}%)`}
+                    : `(${averageRevenueChange > 0 ? "+" : ""}${formatNumberComma(averageRevenueChange)}%)`}
                 </Body>
               </div>
             </div>
@@ -206,9 +213,9 @@ const DashboardPageView = () => {
         </div>
 
         <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
-          <Body>Labour Covers</Body>
-          <div className="flex gap-3">
-            <Heading>${formatNumberComma(thisWeekCovers)}</Heading>
+          <Body>Total Covers</Body>
+          <div className="flex gap-3 items-center">
+            <Heading variant="h1">${formatNumberComma(thisWeekCovers)}</Heading>
 
             <div className="flex gap-1">
               <Body className="text-zinc-500">
@@ -223,7 +230,7 @@ const DashboardPageView = () => {
               >
                 {coversChange === null
                   ? "--"
-                  : `(${formatNumberComma(coversChange)}%)`}
+                  : `(${coversChange > 0 ? "+" : ""}${formatNumberComma(coversChange)}%)`}
               </Body>
             </div>
           </div>

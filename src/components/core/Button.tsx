@@ -4,7 +4,7 @@ import classNames from "classnames";
 import type { ButtonHTMLAttributes, Ref } from "react";
 
 export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "active";
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -31,6 +31,9 @@ const Button = ({
 
           "border-blue-200 bg-white text-blue-700 hover:bg-blue-50 active:bg-blue-100":
             variant === "secondary" && !disabled,
+
+          "border-yellow-500 bg-yellow-500 text-zinc-800 hover:border-yellow-600 hover:bg-yellow-600 active:border-yellow-700 active:bg-yellow-700":
+            variant === "active" && !disabled,
 
           "p-2 hover:bg-blue-50": variant === "ghost" && !disabled,
 

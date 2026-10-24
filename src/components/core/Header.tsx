@@ -31,12 +31,12 @@ const Header = ({ onLogout }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b border-blue-100 bg-white px-6 shadow-sm">
-      <nav className="flex items-center gap-1">
+      <nav className="flex items-center gap-1 flex-wrap">
         <Link
           href="/"
           className={classNames(
             "inline-flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium transition-colors",
-            pathname.startsWith("/")
+            pathname === "/"
               ? "bg-blue-50 text-blue-700"
               : "text-zinc-800 hover:bg-blue-50 hover:text-blue-700",
           )}

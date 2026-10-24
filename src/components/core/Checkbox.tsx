@@ -1,7 +1,7 @@
 "use client";
 
 import { InputHTMLAttributes } from "react";
-import { Square, SquareCheck } from "lucide-react";
+import { CheckSquare, Square, SquareCheck } from "lucide-react";
 import classNames from "classnames";
 
 export interface ICheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -20,13 +20,13 @@ export const Checkbox = (props: ICheckboxProps) => {
       />
 
       <SquareCheck
-        size={20}
+        size={25}
         aria-hidden="true"
         className="hidden shrink-0 text-zinc-800 peer-checked:block"
       />
 
       <Square
-        size={20}
+        size={25}
         aria-hidden="true"
         className="shrink-0 text-zinc-800 peer-checked:hidden"
       />

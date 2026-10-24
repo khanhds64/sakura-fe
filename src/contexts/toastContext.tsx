@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Body } from "../components/core/Body";
 import Button from "../components/core/Button";
+import { X } from "lucide-react";
 
 type ToastType = "success" | "error";
 
@@ -68,7 +69,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               onClick={hideToast}
               aria-label="Close notification"
             >
-              ×
+              <X size={18} />
             </Button>
           </div>
         </div>

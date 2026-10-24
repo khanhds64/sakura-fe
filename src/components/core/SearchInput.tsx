@@ -3,7 +3,7 @@
 import { InputHTMLAttributes } from "react";
 import Input from "./Input";
 import classNames from "classnames";
-import SearchIcon from "../icons/SearchIcon";
+import { SearchIcon } from "lucide-react";
 
 const SearchInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
   const { className, ...rest } = props;

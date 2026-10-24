@@ -240,7 +240,10 @@ const DailyMetricForm = () => {
               value={watcher.metricDate}
               error={errors.metricDate ? errors.metricDate.message : ""}
               onSelectDate={(d) =>
-                setValue("metricDate", d, { shouldValidate: true })
+                setValue("metricDate", d, {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                })
               }
             />
           </div>

@@ -2,6 +2,7 @@ export const EMAIL_REGEX = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
 // export const PASSWORD_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 export const DATE_FORMAT_YYYYMMDD = "yyyy-MM-dd";
 export const COMMA_REGEX = /,/g;
+export const PAGE_SIZE_DEFAULT = 10;
 
 export const USER_ROLE = {
     admin: "admin",

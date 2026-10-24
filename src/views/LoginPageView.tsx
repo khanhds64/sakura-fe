@@ -65,8 +65,8 @@ export const LoginPageView = () => {
   });
 
   return (
-    <div className="w-124 max-w-full flex flex-col gap-10">
-      <div className="flex flex-col p-6 gap-5 rounded-2xl">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-124 max-w-full flex flex-col self-center gap-5">
         <Heading className="text-zinc-900 mb-5" variant="h0">
           LOGIN
         </Heading>

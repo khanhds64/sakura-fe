@@ -10,7 +10,7 @@ import DateInput from "@/src/components/core/DateInput";
 import { ErrorText } from "@/src/components/core/ErrorText";
 import Button from "@/src/components/core/Button";
 import { Heading } from "@/src/components/core/Heading";
-import { Search } from "lucide-react";
+import { ListX, Search } from "lucide-react";
 
 const schema = Yup.object().shape({
   startDate: Yup.string().test(
@@ -69,6 +69,7 @@ export const SearchBox = ({ initialValues, onSearch }: ISearchBoxProps) => {
     formState: { errors },
     handleSubmit,
     setValue,
+    reset,
     watch,
   } = useForm<TDailyMetricFilter>({
     resolver: yupResolver(schema),
@@ -83,6 +84,11 @@ export const SearchBox = ({ initialValues, onSearch }: ISearchBoxProps) => {
   const onSubmit = handleSubmit((data) => {
     onSearch?.(data);
   });
+
+  const onClear = () => {
+    setValue("startDate", "");
+    setValue("endDate", "");
+  };
 
   return (
     <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]">
@@ -118,9 +124,17 @@ export const SearchBox = ({ initialValues, onSearch }: ISearchBoxProps) => {
         {errors.endDate && <ErrorText>{errors.endDate.message}</ErrorText>}
       </div>
 
-      <Button onClick={onSubmit} className="self-start h-11">
-        <Search size={18} />
-      </Button>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <Button onClick={onSubmit} className="h-11 w-full">
+          <Search size={18} />
+          <Heading>Search</Heading>
+        </Button>
+
+        <Button onClick={onClear} className="h-11 w-full">
+          <ListX size={18} />
+          <Heading>Clear filters</Heading>
+        </Button>
+      </div>
     </div>
   );
 };

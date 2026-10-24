@@ -15,22 +15,23 @@ import { Pagination } from "./Pagination";
 import { features } from "./tableFeatures";
 
 import { DailyMetricItem, DailyMetricList } from "@/src/api";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import _ from "lodash";
 import Button from "@/src/components/core/Button";
 import { Heading } from "@/src/components/core/Heading";
 import { apiClient } from "@/src/api/config-api";
 import Link from "next/link";
+import { formatNumberComma } from "@/src/lib/format";
+import { PAGE_SIZE_DEFAULT } from "@/src/lib/constants";
 
 const columnHelper = createColumnHelper<typeof features, DailyMetricItem>();
-
-const PAGE_SIZE_DEFAULT = 10;
 
 const DailyMetricListPageView = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  // Read filter and pagination state from the URL.
+  // Read filter and pagination state from the url
   const searchParamStr = searchParams.toString();
 
   const startDate = searchParams.get("startDate") ?? "";
@@ -54,7 +55,7 @@ const DailyMetricListPageView = () => {
     pageSize: itemsPerPage,
   };
 
-  // Update URL parameters without removing unrelated parameters.
+  // Update url parameters without removing unrelated parameters
   const updateQueryParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParamStr);
 
@@ -102,7 +103,7 @@ const DailyMetricListPageView = () => {
   const totalItems = dailyMetricListQuery?.totalItems ?? 0;
   const totalPages = dailyMetricListQuery?.totalPages ?? 0;
 
-  // Searching updates the URL and resets pagination to page 1.
+  // Searching updates the url and resets pagination to page 1
   const onSearch = (values: TDailyMetricFilter) => {
     updateQueryParams({
       startDate: values.startDate || null,
@@ -111,7 +112,7 @@ const DailyMetricListPageView = () => {
     });
   };
 
-  // Keep TanStack pagination changes synchronized with the URL.
+  // Keep tanstack pagination changes synchronized with the url
   const onPaginationChange = (
     updater: PaginationState | ((previous: PaginationState) => PaginationState),
   ) => {
@@ -155,28 +156,36 @@ const DailyMetricListPageView = () => {
         columnHelper.accessor("posRevenue", {
           header: "POS Revenue",
           cell: (info) => (
-            <span className="text-sm text-zinc-800">{info.getValue()}</span>
+            <span className="text-sm text-zinc-800">
+              {formatNumberComma(info.getValue())}
+            </span>
           ),
         }),
 
         columnHelper.accessor("eatclubRevenue", {
           header: "EatClub Revenue",
           cell: (info) => (
-            <span className="text-sm text-zinc-800">{info.getValue()}</span>
+            <span className="text-sm text-zinc-800">
+              {formatNumberComma(info.getValue())}
+            </span>
           ),
         }),
 
         columnHelper.accessor("labourCosts", {
           header: "Labour Costs",
           cell: (info) => (
-            <span className="text-sm text-zinc-800">{info.getValue()}</span>
+            <span className="text-sm text-zinc-800">
+              {formatNumberComma(info.getValue())}
+            </span>
           ),
         }),
 
         columnHelper.accessor("covers", {
           header: "Covers",
           cell: (info) => (
-            <span className="text-sm text-zinc-800">{info.getValue()}</span>
+            <span className="text-sm text-zinc-800">
+              {formatNumberComma(info.getValue())}
+            </span>
           ),
         }),
 
@@ -214,9 +223,12 @@ const DailyMetricListPageView = () => {
     pageCount: totalPages,
   });
 
+  // For re-render searchbox with new key
+  const currentTab = pathname.split("/").slice(0, 2).join("/");
+
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <Heading variant="h0">Daily Metrics</Heading>
 
         <Link
@@ -227,7 +239,7 @@ const DailyMetricListPageView = () => {
             return `/management/create?${params.toString()}`;
           })()}
         >
-          <Button>
+          <Button className="h-auto min-h-11">
             <Plus size={20} />
             <Heading>Create</Heading>
           </Button>
@@ -235,6 +247,7 @@ const DailyMetricListPageView = () => {
       </div>
 
       <SearchBox
+        key={currentTab}
         initialValues={{
           startDate,
           endDate,
