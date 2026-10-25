@@ -5,13 +5,13 @@ All URIs are relative to *http://localhost:8080*
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
 |[**createAdminDailyMetric**](#createadmindailymetric) | **POST** /admin/daily-metrics | Create daily metrics|
-|[**getAdminDailyMetricById**](#getadmindailymetricbyid) | **GET** /admin/daily-metrics/{id} | Get daily metrics by ID|
-|[**getAdminDailyMetrics**](#getadmindailymetrics) | **GET** /admin/daily-metrics | Get daily metrics|
+|[**getDailyMetricById**](#getdailymetricbyid) | **GET** /admin/daily-metrics/{id} | Get daily metrics by ID|
+|[**getDailyMetricList**](#getdailymetriclist) | **GET** /admin/daily-metrics | Get daily metric list|
 |[**getDashboardRevenueTrend**](#getdashboardrevenuetrend) | **GET** /dashboard/revenue-trend | Get weekly revenue trend|
 |[**getDashboardSummary**](#getdashboardsummary) | **GET** /dashboard/summary | Get dashboard summary for this week and last week|
 |[**login**](#login) | **POST** /auth/login | User login|
 |[**logout**](#logout) | **POST** /auth/logout | User logout|
-|[**updateAdminDailyMetric**](#updateadmindailymetric) | **PUT** /admin/daily-metrics/{id} | Update daily metrics|
+|[**updateDailyMetric**](#updatedailymetric) | **PUT** /admin/daily-metrics/{id} | Update daily metrics|
 
 # **createAdminDailyMetric**
 > DailyMetricItem createAdminDailyMetric(dailyMetricRequest)
@@ -69,8 +69,8 @@ const { status, data } = await apiInstance.createAdminDailyMetric(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAdminDailyMetricById**
-> DailyMetricItem getAdminDailyMetricById()
+# **getDailyMetricById**
+> DailyMetricItem getDailyMetricById()
 
 
 ### Example
@@ -86,7 +86,7 @@ const apiInstance = new DefaultApi(configuration);
 
 let id: string; //Daily metrics record ID (default to undefined)
 
-const { status, data } = await apiInstance.getAdminDailyMetricById(
+const { status, data } = await apiInstance.getDailyMetricById(
     id
 );
 ```
@@ -124,8 +124,8 @@ const { status, data } = await apiInstance.getAdminDailyMetricById(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getAdminDailyMetrics**
-> DailyMetricList getAdminDailyMetrics()
+# **getDailyMetricList**
+> DailyMetricList getDailyMetricList()
 
 
 ### Example
@@ -144,7 +144,7 @@ let endDate: string; //Filter records up to this date (optional) (default to und
 let currentPage: number; // (optional) (default to 1)
 let itemsPerPage: number; // (optional) (default to 10)
 
-const { status, data } = await apiInstance.getAdminDailyMetrics(
+const { status, data } = await apiInstance.getDailyMetricList(
     startDate,
     endDate,
     currentPage,
@@ -384,8 +384,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **updateAdminDailyMetric**
-> DailyMetricItem updateAdminDailyMetric(dailyMetricRequest)
+# **updateDailyMetric**
+> DailyMetricItem updateDailyMetric(dailyMetricRequest)
 
 
 ### Example
@@ -403,7 +403,7 @@ const apiInstance = new DefaultApi(configuration);
 let id: string; //Daily metrics record ID (default to undefined)
 let dailyMetricRequest: DailyMetricRequest; //
 
-const { status, data } = await apiInstance.updateAdminDailyMetric(
+const { status, data } = await apiInstance.updateDailyMetric(
     id,
     dailyMetricRequest
 );

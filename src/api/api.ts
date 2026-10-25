@@ -38,6 +38,12 @@ export interface DailyMetricList {
     'totalItems': number;
     'totalPages': number;
 }
+export interface DailyMetricListQuery {
+    'startDate'?: string;
+    'endDate'?: string;
+    'currentPage'?: number;
+    'itemsPerPage'?: number;
+}
 export interface DailyMetricRequest {
     'metricDate': string;
     'posRevenue': number;
@@ -143,9 +149,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminDailyMetricById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getDailyMetricById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('getAdminDailyMetricById', 'id', id)
+            assertParamExists('getDailyMetricById', 'id', id)
             const localVarPath = `/admin/daily-metrics/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -176,7 +182,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary Get daily metrics
+         * @summary Get daily metric list
          * @param {string} [startDate] Filter from this date through today if endDate is omitted
          * @param {string} [endDate] Filter records up to this date
          * @param {number} [currentPage] 
@@ -184,7 +190,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminDailyMetrics: async (startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getDailyMetricList: async (startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/admin/daily-metrics`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -378,11 +384,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAdminDailyMetric: async (id: string, dailyMetricRequest: DailyMetricRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateDailyMetric: async (id: string, dailyMetricRequest: DailyMetricRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('updateAdminDailyMetric', 'id', id)
+            assertParamExists('updateDailyMetric', 'id', id)
             // verify required parameter 'dailyMetricRequest' is not null or undefined
-            assertParamExists('updateAdminDailyMetric', 'dailyMetricRequest', dailyMetricRequest)
+            assertParamExists('updateDailyMetric', 'dailyMetricRequest', dailyMetricRequest)
             const localVarPath = `/admin/daily-metrics/{id}`
                 .replace('{id}', encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -442,15 +448,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAdminDailyMetricById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAdminDailyMetricById(id, options);
+        async getDailyMetricById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDailyMetricById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAdminDailyMetricById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getDailyMetricById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @summary Get daily metrics
+         * @summary Get daily metric list
          * @param {string} [startDate] Filter from this date through today if endDate is omitted
          * @param {string} [endDate] Filter records up to this date
          * @param {number} [currentPage] 
@@ -458,10 +464,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAdminDailyMetrics(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAdminDailyMetrics(startDate, endDate, currentPage, itemsPerPage, options);
+        async getDailyMetricList(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDailyMetricList(startDate, endDate, currentPage, itemsPerPage, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAdminDailyMetrics']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getDailyMetricList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -522,10 +528,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateAdminDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAdminDailyMetric(id, dailyMetricRequest, options);
+        async updateDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DailyMetricItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateDailyMetric(id, dailyMetricRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.updateAdminDailyMetric']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.updateDailyMetric']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -554,12 +560,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminDailyMetricById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricItem> {
-            return localVarFp.getAdminDailyMetricById(id, options).then((request) => request(axios, basePath));
+        getDailyMetricById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricItem> {
+            return localVarFp.getDailyMetricById(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get daily metrics
+         * @summary Get daily metric list
          * @param {string} [startDate] Filter from this date through today if endDate is omitted
          * @param {string} [endDate] Filter records up to this date
          * @param {number} [currentPage] 
@@ -567,8 +573,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminDailyMetrics(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricList> {
-            return localVarFp.getAdminDailyMetrics(startDate, endDate, currentPage, itemsPerPage, options).then((request) => request(axios, basePath));
+        getDailyMetricList(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricList> {
+            return localVarFp.getDailyMetricList(startDate, endDate, currentPage, itemsPerPage, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -616,8 +622,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateAdminDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricItem> {
-            return localVarFp.updateAdminDailyMetric(id, dailyMetricRequest, options).then((request) => request(axios, basePath));
+        updateDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig): AxiosPromise<DailyMetricItem> {
+            return localVarFp.updateDailyMetric(id, dailyMetricRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -644,13 +650,13 @@ export class DefaultApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getAdminDailyMetricById(id: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getAdminDailyMetricById(id, options).then((request) => request(this.axios, this.basePath));
+    public getDailyMetricById(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getDailyMetricById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get daily metrics
+     * @summary Get daily metric list
      * @param {string} [startDate] Filter from this date through today if endDate is omitted
      * @param {string} [endDate] Filter records up to this date
      * @param {number} [currentPage] 
@@ -658,8 +664,8 @@ export class DefaultApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getAdminDailyMetrics(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getAdminDailyMetrics(startDate, endDate, currentPage, itemsPerPage, options).then((request) => request(this.axios, this.basePath));
+    public getDailyMetricList(startDate?: string, endDate?: string, currentPage?: number, itemsPerPage?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getDailyMetricList(startDate, endDate, currentPage, itemsPerPage, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -712,8 +718,8 @@ export class DefaultApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public updateAdminDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).updateAdminDailyMetric(id, dailyMetricRequest, options).then((request) => request(this.axios, this.basePath));
+    public updateDailyMetric(id: string, dailyMetricRequest: DailyMetricRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).updateDailyMetric(id, dailyMetricRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

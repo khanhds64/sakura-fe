@@ -92,14 +92,14 @@ const DashboardPageView = () => {
   );
 
   if (revenueTrend.isPending) {
-    return <div className="p-4">Loading dashboard...</div>;
+    return <Body className="p-4">Loading dashboard...</Body>;
   }
 
   if (revenueTrend.isError) {
     return (
-      <div className="p-4 text-red-500">
+      <Body className="p-4 text-red-500">
         Failed to load dashboard revenue data.
-      </div>
+      </Body>
     );
   }
 

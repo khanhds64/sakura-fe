@@ -7,6 +7,7 @@ common.ts
 configuration.ts
 docs/DailyMetricItem.md
 docs/DailyMetricList.md
+docs/DailyMetricListQuery.md
 docs/DailyMetricRequest.md
 docs/DashboardSummary.md
 docs/DashboardSummaryLastWeek.md

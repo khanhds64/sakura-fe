@@ -89,7 +89,7 @@ const DailyMetricListPageView = () => {
     ],
     queryFn: () =>
       apiClient
-        .getAdminDailyMetrics(
+        .getDailyMetricList(
           startDate || undefined,
           endDate || undefined,
           currentPage,

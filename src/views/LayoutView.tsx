@@ -44,7 +44,6 @@ export default function LayoutView(props: ILayoutViewProps) {
     cancelRedirect();
   };
 
-  // prevent user access by typing url on browser
   useEffect(() => {
     const roleCheck = () => {
       if (!initialized || _.isUndefined(roles)) {

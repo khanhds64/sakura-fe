@@ -69,7 +69,6 @@ export const SearchBox = ({ initialValues, onSearch }: ISearchBoxProps) => {
     formState: { errors },
     handleSubmit,
     setValue,
-    reset,
     watch,
   } = useForm<TDailyMetricFilter>({
     resolver: yupResolver(schema),

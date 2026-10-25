@@ -140,7 +140,7 @@ const DailyMetricForm = () => {
     queryKey: ["dailyMetricDetail", id],
     queryFn: () =>
       apiClient
-        .getAdminDailyMetricById(id)
+        .getDailyMetricById(id)
         .then((res) => {
           const { data } = res;
           reset({
@@ -170,7 +170,7 @@ const DailyMetricForm = () => {
 
   const editDailyMetricMutation = useMutation({
     mutationFn: (req: DailyMetricRequest) =>
-      apiClient.updateAdminDailyMetric(id, req),
+      apiClient.updateDailyMetric(id, req),
     onSuccess: () => {
       showSuccess("Save successfully");
       router.push(metricsPageUrl);
