@@ -3,7 +3,6 @@ import { RevenueTrendItem, RevenueTrendResponse } from '../api';
 import { formatLargeNumber, getDayName } from './format';
 import { COLORS } from './constants';
 
-
 export type RevenueTrendItemOptional = {
     metricDate: string;
 } & Partial<Omit<RevenueTrendItem, 'metricDate'>>;
@@ -12,7 +11,6 @@ export type RevenueTrendResponseOptional = {
     currentWeek: RevenueTrendItemOptional[];
     lastWeek?: RevenueTrendItemOptional[];
 };
-
 
 export function filterRevenueFields(
     data: RevenueTrendResponse,
@@ -116,10 +114,10 @@ export const buildChartOption = (
     // last week data
     if (isCompareMode && data.lastWeek) {
         if (hasPos) {
-            legendData.push('Last Week POS');
+            legendData.push('Last Week POS Revenue');
 
             series.push({
-                name: 'Last Week POS',
+                name: 'Last Week POS Revenue',
                 type: 'bar',
                 stack: 'lastRevenue',
                 data: data.lastWeek.map(d => d.posRevenue ?? 0),
@@ -131,10 +129,10 @@ export const buildChartOption = (
         }
 
         if (hasEatclub) {
-            legendData.push('Last Week Eatclub');
+            legendData.push('Last Week Eatclub Revenue');
 
             series.push({
-                name: 'Last Week Eatclub',
+                name: 'Last Week Eatclub Revenue',
                 type: 'bar',
                 stack: 'lastRevenue',
                 data: data.lastWeek.map(d => d.eatclubRevenue ?? 0),
@@ -147,10 +145,10 @@ export const buildChartOption = (
         }
 
         if (hasLabour) {
-            legendData.push('Last Week Labour');
+            legendData.push('Last Week Labour Costs');
 
             series.push({
-                name: 'Last Week Labour',
+                name: 'Last Week Labour Costs',
                 type: 'bar',
                 stack: 'lastLabour',
                 data: data.lastWeek.map(d => d.labourCosts ?? 0),
