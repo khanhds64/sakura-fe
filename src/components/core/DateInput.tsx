@@ -66,6 +66,7 @@ const DateInput = (props: IDateInputProps) => {
             showOutsideDays
             selected={selectedDate}
             month={selectedDate}
+            disabled={{ after: new Date() }}
             onSelect={(d) => {
               if (d) setSelectedDate(d);
             }}
