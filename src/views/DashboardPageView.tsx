@@ -19,6 +19,7 @@ import Button from "../components/core/Button";
 import { calculatePercentageChange, formatNumberComma } from "../lib/format";
 import { filterRevenueFields } from "../lib/chartBuilder";
 import classNames from "classnames";
+import { useAuth } from "../hooks/useAuth";
 
 const schema = Yup.object().shape({
   posRevenue: Yup.boolean(),
@@ -27,6 +28,8 @@ const schema = Yup.object().shape({
   isCompared: Yup.boolean(),
 });
 const DashboardPageView = () => {
+  const { authData, initialized } = useAuth();
+
   const { register, watch, setValue } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -45,11 +48,12 @@ const DashboardPageView = () => {
       const response = await apiClient.getDashboardRevenueTrend(true);
       return response.data;
     },
+    enabled: !!authData && initialized,
     retry: false,
   });
 
   const dashboardSummary = useQuery<DashboardSummary>({
-    queryKey: ["dashboard sumamry"],
+    queryKey: ["dashboardSumamry"],
     queryFn: async () => {
       const response = await apiClient.getDashboardSummary();
       return response.data;
@@ -91,11 +95,11 @@ const DashboardPageView = () => {
     lastWeekAverageRevenue,
   );
 
-  if (revenueTrend.isPending) {
+  if (revenueTrend.isPending && authData && initialized) {
     return <Body className="p-4">Loading dashboard...</Body>;
   }
 
-  if (revenueTrend.isError) {
+  if (revenueTrend.isError && authData && initialized) {
     return (
       <Body className="p-4 text-red-500">
         Failed to load dashboard revenue data.
@@ -105,142 +109,150 @@ const DashboardPageView = () => {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-2 lg:px-4">
-      <div className="flex gap-3 items-start min-h-18">
-        <Heading variant="h1" className="w-full max-w-100 min-w-0">
-          {watcher.isCompared
-            ? "This Week's Revenue Trend vs Last Week"
-            : "This Week's Revenue Trend"}
-        </Heading>
-
-        <div className="flex items-center justify-center gap-3 flex-wrap">
-          <div className="flex gap-2 flex-wrap">
-            <Checkbox
-              className="border-zinc-800 text-white"
-              {...register("posRevenue")}
-            >
-              <Minus className="text-zinc-800" />
-              <Body>POS Revenue</Body>
-            </Checkbox>
-
-            <Checkbox
-              className="border-zinc-800 text-white"
-              {...register("eatclubRevenue")}
-            >
-              <Minus className="text-blue-700" />
-              <Body>Eatclub Revenue</Body>
-            </Checkbox>
-
-            <Checkbox
-              className="border-zinc-800 text-white"
-              {...register("labourCosts")}
-            >
-              <Minus className="text-orange-700" />
-              <Body>Labour Costs</Body>
-            </Checkbox>
-          </div>
-
-          <Button
-            variant={watcher.isCompared ? "active" : "primary"}
-            onClick={() => setValue("isCompared", !watcher.isCompared)}
-          >
-            <ChartColumn size={18} />
-            <Heading>Compare to Last Week</Heading>
-          </Button>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-3 text-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
-          <Body>Total Revenue</Body>
-          {(!watcher.posRevenue || !watcher.eatclubRevenue) && (
-            <Heading>--</Heading>
-          )}
-
-          {watcher.posRevenue && watcher.eatclubRevenue && (
-            <div className="flex gap-3 items-center">
-              <Heading variant="h1">
-                ${formatNumberComma(thisWeekRevenue)}
-              </Heading>
-
-              <div className="flex gap-1">
-                <Body className="text-zinc-500">
-                  vs ${formatNumberComma(lastWeekRevenue)}
-                </Body>
-                <Body
-                  className={classNames(
-                    revenueChange === null || revenueChange < 0
-                      ? "text-red-400"
-                      : "text-green-400",
-                  )}
-                >
-                  {revenueChange === null
-                    ? "--"
-                    : `(${revenueChange > 0 ? "+" : ""}${formatNumberComma(revenueChange)}%)`}
-                </Body>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
-          <Body>Average per Day</Body>
-
-          {(!watcher.posRevenue || !watcher.eatclubRevenue) && <div>--</div>}
-
-          {watcher.posRevenue && watcher.eatclubRevenue && (
-            <div className="flex gap-3 items-center">
-              <Heading variant="h1">
-                ${formatNumberComma(thisWeekAverageRevenue)}
-              </Heading>
-
-              <div className="flex gap-1">
-                <Body className="text-zinc-500">
-                  vs ${formatNumberComma(lastWeekAverageRevenue)}
-                </Body>
-                <Body
-                  className={classNames(
-                    averageRevenueChange === null || averageRevenueChange < 0
-                      ? "text-red-400"
-                      : "text-green-400",
-                  )}
-                >
-                  {averageRevenueChange === null
-                    ? "--"
-                    : `(${averageRevenueChange > 0 ? "+" : ""}${formatNumberComma(averageRevenueChange)}%)`}
-                </Body>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
-          <Body>Total Covers</Body>
-          <div className="flex gap-3 items-center">
-            <Heading variant="h1">${formatNumberComma(thisWeekCovers)}</Heading>
-
-            <div className="flex gap-1">
-              <Body className="text-zinc-500">
-                vs ${formatNumberComma(lastWeekCovers)}
-              </Body>
-              <Body
-                className={classNames(
-                  coversChange === null || coversChange < 0
-                    ? "text-red-400"
-                    : "text-green-400",
-                )}
-              >
-                {coversChange === null
-                  ? "--"
-                  : `(${coversChange > 0 ? "+" : ""}${formatNumberComma(coversChange)}%)`}
-              </Body>
-            </div>
-          </div>
-        </div>
-      </div>
       {filterData && (
-        <RevenueChart
-          isCompared={watcher.isCompared ?? false}
-          data={filterData}
-        />
+        <>
+          <div className="flex gap-3 items-start min-h-18">
+            <Heading variant="h1" className="w-full max-w-100 min-w-0">
+              {watcher.isCompared
+                ? "This Week's Revenue Trend vs Last Week"
+                : "This Week's Revenue Trend"}
+            </Heading>
+
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
+                <Checkbox
+                  className="border-zinc-800 text-white"
+                  {...register("posRevenue")}
+                >
+                  <Minus className="text-zinc-800" />
+                  <Body>POS Revenue</Body>
+                </Checkbox>
+
+                <Checkbox
+                  className="border-zinc-800 text-white"
+                  {...register("eatclubRevenue")}
+                >
+                  <Minus className="text-blue-700" />
+                  <Body>Eatclub Revenue</Body>
+                </Checkbox>
+
+                <Checkbox
+                  className="border-zinc-800 text-white"
+                  {...register("labourCosts")}
+                >
+                  <Minus className="text-orange-700" />
+                  <Body>Labour Costs</Body>
+                </Checkbox>
+              </div>
+
+              <Button
+                variant={watcher.isCompared ? "active" : "primary"}
+                onClick={() => setValue("isCompared", !watcher.isCompared)}
+              >
+                <ChartColumn size={18} />
+                <Heading>Compare to Last Week</Heading>
+              </Button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-3 text-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
+              <Body>Total Revenue</Body>
+              {(!watcher.posRevenue || !watcher.eatclubRevenue) && (
+                <Heading>--</Heading>
+              )}
+
+              {watcher.posRevenue && watcher.eatclubRevenue && (
+                <div className="flex gap-3 items-center">
+                  <Heading variant="h1">
+                    ${formatNumberComma(thisWeekRevenue)}
+                  </Heading>
+
+                  <div className="flex gap-1">
+                    <Body className="text-zinc-500">
+                      vs ${formatNumberComma(lastWeekRevenue)}
+                    </Body>
+                    <Body
+                      className={classNames(
+                        revenueChange === null || revenueChange < 0
+                          ? "text-red-400"
+                          : "text-green-400",
+                      )}
+                    >
+                      {revenueChange === null
+                        ? "--"
+                        : `(${revenueChange > 0 ? "+" : ""}${formatNumberComma(revenueChange)}%)`}
+                    </Body>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
+              <Body>Average per Day</Body>
+
+              {(!watcher.posRevenue || !watcher.eatclubRevenue) && (
+                <div>--</div>
+              )}
+
+              {watcher.posRevenue && watcher.eatclubRevenue && (
+                <div className="flex gap-3 items-center">
+                  <Heading variant="h1">
+                    ${formatNumberComma(thisWeekAverageRevenue)}
+                  </Heading>
+
+                  <div className="flex gap-1">
+                    <Body className="text-zinc-500">
+                      vs ${formatNumberComma(lastWeekAverageRevenue)}
+                    </Body>
+                    <Body
+                      className={classNames(
+                        averageRevenueChange === null ||
+                          averageRevenueChange < 0
+                          ? "text-red-400"
+                          : "text-green-400",
+                      )}
+                    >
+                      {averageRevenueChange === null
+                        ? "--"
+                        : `(${averageRevenueChange > 0 ? "+" : ""}${formatNumberComma(averageRevenueChange)}%)`}
+                    </Body>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2 p-2 bg-stone-100 border border-stone-200 shadow-sm rounded-xl">
+              <Body>Total Covers</Body>
+              <div className="flex gap-3 items-center">
+                <Heading variant="h1">
+                  ${formatNumberComma(thisWeekCovers)}
+                </Heading>
+
+                <div className="flex gap-1">
+                  <Body className="text-zinc-500">
+                    vs ${formatNumberComma(lastWeekCovers)}
+                  </Body>
+                  <Body
+                    className={classNames(
+                      coversChange === null || coversChange < 0
+                        ? "text-red-400"
+                        : "text-green-400",
+                    )}
+                  >
+                    {coversChange === null
+                      ? "--"
+                      : `(${coversChange > 0 ? "+" : ""}${formatNumberComma(coversChange)}%)`}
+                  </Body>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <RevenueChart
+            isCompared={watcher.isCompared ?? false}
+            data={filterData}
+          />
+        </>
       )}
     </div>
   );

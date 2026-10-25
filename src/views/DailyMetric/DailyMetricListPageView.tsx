@@ -81,7 +81,7 @@ const DailyMetricListPageView = () => {
     error,
   } = useQuery<DailyMetricList>({
     queryKey: [
-      "admin-daily-metrics",
+      "adminDailyMetrics",
       startDate,
       endDate,
       currentPage,
